@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  emqx-enterprise:
+    image: emqx/emqx-enterprise:5.7.0
+    container_name: emqx
+    healthcheck:
+      test: ["CMD", "emqx", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+    ports:
+      - 1883:1883
+      - 18083:18083
+    volumes:
+      - $PWD/emqx/api_secret:/opt/emqx/data/api_secret
+    environment:
+      EMQX_DASHBOARD__BOOTSTRAP_USERS_FILE: '"/opt/emqx/data/api_secret"'
+    depends_on:
+      pulsar:
+        condition: service_started
+
+  pulsar:
+    image: apachepulsar/pulsar:3.0.0
+    container_name: "pulsar_standalone"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+    ports:
+      - "6650:6650"
+    command: bash -c "bin/pulsar standalone"
+
+networks:
+  emqx-net:
+    name: emqx-net

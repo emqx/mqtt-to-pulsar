@@ -1,0 +1,1 @@
+/bin/pulsar-admin topics create-partitioned-topic -p 5 testTopic1
