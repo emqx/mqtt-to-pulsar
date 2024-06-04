@@ -1,0 +1,77 @@
+actions {
+  pulsar {
+    test {
+      connector = tes
+      enable = true
+      parameters {
+        batch_size = 100
+        buffer {
+          memory_overload_protection = false
+          mode = memory
+          per_partition_limit = "2GB"
+          segment_bytes = "100MB"
+        }
+        compression = no_compression
+        max_batch_bytes = "900KB"
+        message {
+          key = "${.clientid}"
+          value = "${.}"
+        }
+        pulsar_topic = testTopic1
+        retention_period = infinity
+        send_buffer = "1MB"
+        strategy = random
+        sync_timeout = "3s"
+      }
+      resource_opts {
+        health_check_interval = "15s"
+      }
+    }
+  }
+}
+
+connectors {
+  pulsar {
+    tes {
+      authentication = none
+      connect_timeout = "5s"
+      resource_opts {
+        health_check_interval = "15s"
+        start_timeout = "5s"
+      }
+      servers = "pulsar://pulsar-broker.intgpulsar.svc.cluster.local:6650"
+      ssl {enable = false, verify = verify_peer}
+    }
+  }
+}
+
+rule_engine {
+  rules {
+    rule_9wvg {
+      actions = []
+      description = ""
+      enable = true
+      metadata {created_at = 1716776557151}
+      sql = """~
+        SELECT
+          *
+        from
+          "$events/client_connected",
+          "$events/client_disconnected"~"""
+    }
+    rule_i2f8 {
+      actions = [
+        "pulsar:test"
+      ]
+      description = ""
+      enable = true
+      metadata {created_at = 1716790950221}
+      sql = """~
+        SELECT
+          *
+        FROM
+          "t/#"
+      ~"""
+    }
+  }
+}
