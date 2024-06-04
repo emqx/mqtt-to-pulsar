@@ -6,7 +6,7 @@ Streaming IoT data into Apache Pulsar using MQTT and EMQX | MQTT Pulsar Integrat
 
 This tutorial will show you how to use EMQX to ingest data into Pulsar. We will use the [EMQX](https://www.emqx.io/) MQTT broker to publish to messages and [Apache Pulsar](https://pulsar.apache.org/) to store the data.
 
-Using EMQX's Webhook integration can bring the following advantages to your business:
+Using EMQX's Pulsar integration can bring the following advantages to your business:
 
 - **Partition Selection Capability**: Pulsar provides different partitioning strategies to write messages from the same MQTT client, topic, or user into the same partition, facilitating subsequent data tracking and processing. 
 - **High Efficiency with Batch Processing**: TWhen batch mode is enabled, EMQX can write multiple pieces of data into Pulsar at the same time. With batch mode enabled, EMQX will temporarily store each piece of data and then write the entire batch of temporarily stored data into Pulsar after a certain amount of time has passed or after a certain number of data pieces have accumulated. This significantly improves write efficiency.
